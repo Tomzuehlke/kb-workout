@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KB Total Body — Schulterschonend</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --accent: #c8f135;
+    --accent2: #4fc3f7;
+    --text: #e8eaf0;
+    --muted: #7a7f96;
+    --danger: #ff5252;
+    --block-a: #c8f135;
+    --block-b: #4fc3f7;
+    --block-c: #ff9a3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 80px 0;
+  }
+
+  header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid #2a2e40;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .header-title h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .header-title p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 3px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .rounds-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .rounds-display span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  /* Round selector */
+  .round-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    margin: 16px;
+    border-radius: 12px;
+  }
+
+  .round-control button {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid #2a2e40;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .round-control button:hover { background: #2f3450; }
+
+  .round-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .round-label strong {
+    display: block;
+    font-size: 1.6rem;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  /* Timer */
+  .timer-section {
+    margin: 0 16px 16px;
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .timer-card {
+    padding: 20px 20px 12px;
+  }
+
+  .timer-phase {
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+
+  .timer-digits {
+    font-family: 'Space Mono', monospace;
+    font-size: 3.6rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .timer-ex-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 8px;
+    min-height: 1.4em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+  }
+
+  .timer-bar-wrap {
+    height: 5px;
+    background: #2a2e40;
+    margin-top: 14px;
+  }
+
+  .timer-bar-fill {
+    height: 100%;
+    border-radius: 0;
+    transition: width 0.9s linear, background 0.3s;
+  }
+
+  .timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 14px 20px 18px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #0f1117; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid #2a2e40; }
+  .btn-danger { background: #2a1a1a; color: var(--danger); border: 1px solid #3a2020; }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    margin: 0 16px 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+
+  .progress-label {
+    margin: 0 16px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Blocks */
+  .block {
+    margin: 0 16px 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a2e40;
+  }
+
+  .block-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .block-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .block-header h2 {
+    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex: 1;
+  }
+
+  .block-tag {
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    background: #1a1d27;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid #2a2e40;
+  }
+
+  .block-chevron {
+    font-size: 0.7rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+
+  .block.collapsed .block-chevron { transform: rotate(-90deg); }
+
+  .exercise-list { background: var(--surface); }
+  .block.collapsed .exercise-list { display: none; }
+
+  .exercise-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-top: 1px solid #1a1d27;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .exercise-row:hover { background: #1e2130; }
+  .exercise-row.active { background: #1e2130; }
+  .exercise-row.done { opacity: 0.45; }
+
+  .exercise-row.done .ex-name { text-decoration: line-through; }
+
+  .ex-check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid #2a2e40;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+  }
+
+  .exercise-row.done .ex-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0f1117;
+  }
+
+  .ex-info { flex: 1; min-width: 0; }
+
+  .ex-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ex-meta {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .ex-weight {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .ex-play-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid #2a2e40;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .ex-play-btn:hover { background: #2f3450; }
+
+  /* Notes modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px 40px;
+    width: 100%;
+    max-width: 500px;
+    border-top: 1px solid #2a2e40;
+    animation: slideUp 0.25s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .modal .modal-meta {
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .modal p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #b0b5cc;
+  }
+
+  .modal-close {
+    float: right;
+    background: var(--surface2);
+    border: 1px solid #2a2e40;
+    color: var(--muted);
+    font-size: 1rem;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: 12px;
+  }
+
+  /* Summary */
+  .summary {
+    margin: 0 16px;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #2a2e40;
+  }
+
+  .summary h3 {
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .summary-cell {
+    text-align: center;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 10px 6px;
+  }
+
+  .summary-cell .val {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .summary-cell .lbl {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Shoulder badge */
+  .shoulder-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent2);
+    background: rgba(79,195,247,0.1);
+    border: 1px solid rgba(79,195,247,0.2);
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin: 0 16px 12px;
+  }
+
+  .section-title {
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 16px 4px;
+  }
+
+  /* Block selector */
+  .block-selector {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--surface);
+    margin: 0 16px 12px;
+    border-radius: 12px;
+    align-items: center;
+  }
+
+  .block-selector-label {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+
+  .block-toggle {
+    flex: 1;
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 2px solid #2a2e40;
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .block-toggle.active-a { border-color: var(--block-a); color: var(--block-a); background: rgba(200,241,53,0.08); }
+  .block-toggle.active-b { border-color: var(--block-b); color: var(--block-b); background: rgba(79,195,247,0.08); }
+  .block-toggle.active-c { border-color: var(--block-c); color: var(--block-c); background: rgba(255,154,60,0.08); }
+
+  .est-time {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-align: center;
+    margin: -6px 16px 10px;
+  }
+
+  .est-time span { color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <h1>KB Total Body</h1>
+    <p>13kg · 8kg · Schulter-safe</p>
+  </div>
+  <div class="rounds-display">
+    Runde<span id="currentRound">1</span>
+  </div>
+</header>
+
+<!-- Round selector -->
+<div class="round-control">
+  <button onclick="changeRound(-1)">−</button>
+  <div class="round-label">
+    <strong id="roundDisplay">2</strong>
+    Runden geplant
+  </div>
+  <button onclick="changeRound(1)">+</button>
+</div>
+
+<!-- Block selector -->
+<div class="section-title">Aktive Blöcke</div>
+<div class="block-selector">
+  <span class="block-selector-label">Blöcke:</span>
+  <button class="block-toggle active-a" id="toggleA" onclick="toggleBlockActive('A')">A<br><span style="font-size:0.6rem;font-weight:400">Beine</span></button>
+  <button class="block-toggle active-b" id="toggleB" onclick="toggleBlockActive('B')">B<br><span style="font-size:0.6rem;font-weight:400">Pull·Core</span></button>
+  <button class="block-toggle active-c" id="toggleC" onclick="toggleBlockActive('C')">C<br><span style="font-size:0.6rem;font-weight:400">Finish</span></button>
+</div>
+<div class="est-time" id="estTime">~<span id="estMinutes">18</span> min · <span id="estExCount">9</span> Übungen × <span id="estRounds">2</span> Runden</div>
+
+<!-- Timer -->
+<div class="timer-section">
+  <div class="timer-card">
+    <div class="timer-phase" id="timerPhase">bereit</div>
+    <div class="timer-digits" id="timerDisplay">0:45</div>
+    <div class="timer-ex-name" id="timerExName">—</div>
+    <div class="timer-bar-wrap">
+      <div class="timer-bar-fill" id="timerBarFill" style="width:100%; background:var(--accent);"></div>
+    </div>
+  </div>
+  <div class="timer-controls">
+    <button class="btn btn-primary" id="startBtn" onclick="toggleTimer()">▶ Start</button>
+    <button class="btn btn-secondary" onclick="skipPhase()">Weiter ▶▶</button>
+    <button class="btn btn-danger" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<!-- Progress -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+</div>
+<div class="progress-label">
+  <span id="progressText">0 / 9 Übungen</span>
+  <span id="progressPct">0%</span>
+</div>
+
+<div class="shoulder-badge">✓ Kein Overhead · Schulter passiv</div>
+
+<!-- Block A -->
+<div class="block" id="blockA">
+  <div class="block-header" onclick="toggleBlock('blockA')" style="background:#0f1a00;">
+    <div class="block-dot" style="background:var(--block-a)"></div>
+    <h2 style="color:var(--block-a)">Block A</h2>
+    <span class="block-tag">Unterkörper · Hinge</span>
+    <span class="block-chevron">▼</span>
+  </div>
+  <div class="exercise-list">
+    <div class="exercise-row" id="ex-0" onclick="toggleDone(0)">
+      <div class="ex-check" id="check-0">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">KB Swing (beidarmig)</div>
+        <div class="ex-meta">45 sek · Hinge, nicht Squat</div>
+      </div>
+      <div class="ex-weight">13kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(0)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-1" onclick="toggleDone(1)">
+      <div class="ex-check" id="check-1">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">Goblet Squat</div>
+        <div class="ex-meta">45 sek · KB vor Brust, kein Overhead</div>
+      </div>
+      <div class="ex-weight">13kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(1)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-2" onclick="toggleDone(2)">
+      <div class="ex-check" id="check-2">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">Einbeiniger Deadlift (re/li)</div>
+        <div class="ex-meta">45 sek · je Seite, Schulter passiv</div>
+      </div>
+      <div class="ex-weight">13kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(2)">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- Block B -->
+<div class="block" id="blockB">
+  <div class="block-header" onclick="toggleBlock('blockB')" style="background:#001820;">
+    <div class="block-dot" style="background:var(--block-b)"></div>
+    <h2 style="color:var(--block-b)">Block B</h2>
+    <span class="block-tag">Pull · Core</span>
+    <span class="block-chevron">▼</span>
+  </div>
+  <div class="exercise-list">
+    <div class="exercise-row" id="ex-3" onclick="toggleDone(3)">
+      <div class="ex-check" id="check-3">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">Bent-over Row (re/li)</div>
+        <div class="ex-meta">45 sek · Ellbogen eng am Körper</div>
+      </div>
+      <div class="ex-weight">8kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(3)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-4" onclick="toggleDone(4)">
+      <div class="ex-check" id="check-4">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">KB Deadbug</div>
+        <div class="ex-meta">45 sek · KB auf Bauch, Rücken bleibt flach</div>
+      </div>
+      <div class="ex-weight">8kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(4)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-5" onclick="toggleDone(5)">
+      <div class="ex-check" id="check-5">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">Suitcase Carry (re/li)</div>
+        <div class="ex-meta">45 sek · aufrecht gehen, kein Shrugging</div>
+      </div>
+      <div class="ex-weight">13kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(5)">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- Block C -->
+<div class="block" id="blockC">
+  <div class="block-header" onclick="toggleBlock('blockC')" style="background:#1a0e00;">
+    <div class="block-dot" style="background:var(--block-c)"></div>
+    <h2 style="color:var(--block-c)">Block C</h2>
+    <span class="block-tag">Metabolisch · Finish</span>
+    <span class="block-chevron">▼</span>
+  </div>
+  <div class="exercise-list">
+    <div class="exercise-row" id="ex-6" onclick="toggleDone(6)">
+      <div class="ex-check" id="check-6">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">KB Lateral Lunge</div>
+        <div class="ex-meta">45 sek · seitlicher Ausfallschritt, kontrolliert</div>
+      </div>
+      <div class="ex-weight">8kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(6)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-7" onclick="toggleDone(7)">
+      <div class="ex-check" id="check-7">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">KB Swing (einarmig)</div>
+        <div class="ex-meta">45 sek · Schulter stabilisiert, nicht drückt</div>
+      </div>
+      <div class="ex-weight">8kg</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(7)">▶</button>
+    </div>
+    <div class="exercise-row" id="ex-8" onclick="toggleDone(8)">
+      <div class="ex-check" id="check-8">✓</div>
+      <div class="ex-info">
+        <div class="ex-name">Farmer's Carry (asymm.)</div>
+        <div class="ex-meta">45 sek · 13+8kg, mehr Core-Demand</div>
+      </div>
+      <div class="ex-weight">13+8</div>
+      <button class="ex-play-btn" onclick="event.stopPropagation(); startExercise(8)">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="section-title">Session</div>
+<div class="summary">
+  <h3>Übersicht</h3>
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <div class="val" id="sumDone">0</div>
+      <div class="lbl">Erledigt</div>
+    </div>
+    <div class="summary-cell">
+      <div class="val" id="sumRound">2</div>
+      <div class="lbl">Runden</div>
+    </div>
+    <div class="summary-cell">
+      <div class="val" id="sumTime">~35'</div>
+      <div class="lbl">Dauer</div>
+    </div>
+  </div>
+</div>
+
+<!-- Notes modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle"></h3>
+    <div class="modal-meta" id="modalMeta"></div>
+    <p id="modalNote"></p>
+  </div>
+</div>
+
+<script>
+const exercises = [
+  { name: "KB Swing (beidarmig)", weight: "13kg", block: "A", duration: 45, rest: 15,
+    note: "Hüfte treibt die Bewegung — nicht mit den Armen ziehen. Rücken flach, Blick geradeaus. Die Schulter ist bei dieser Übung komplett passiv: KB schwingt bis Schulterhöhe, kein Overhead." },
+  { name: "Goblet Squat", weight: "13kg", block: "A", duration: 45, rest: 15,
+    note: "KB hochkant mit beiden Händen vor der Brust halten wie einen Kelch. Tief in die Hocke, Knie nach außen drücken, Rücken aufrecht. Schulter macht gar nichts — KB hängt passiv vor dir." },
+  { name: "Einbeiniger Deadlift (re/li)", weight: "13kg", block: "A", duration: 45, rest: 15,
+    note: "KB in einer Hand. Standbein leicht gebeugt. Oberkörper kippt nach vorne, freies Bein geht nach hinten als Gegengewicht. Schulter bleibt unten und entspannt. Beide Seiten trainieren — Enduro-Relevanz: dominante Seite ausgleichen." },
+  { name: "Bent-over Row (re/li)", weight: "8kg", block: "B", duration: 45, rest: 15,
+    note: "Oberkörper ~45° nach vorne, freie Hand stützt auf dem Knie ab. Ellbogen eng am Körper ziehen — kein breites Rudern. Schulterblatt am Ende der Bewegung einziehen. Rechte Seite: bewusst kontrolliert, kein Schwingen." },
+  { name: "KB Deadbug", weight: "8kg", block: "B", duration: 45, rest: 15,
+    note: "Rückenlage. Arme senkrecht zur Decke, Beine 90° (Tischplatte). KB liegt auf dem Bauch als taktiles Feedback. Abwechselnd ein Bein strecken + gegenüberliegenden Arm absenken — ohne dass der Rücken sich vom Boden hebt. Schulter ist komplett passiv." },
+  { name: "Suitcase Carry (re/li)", weight: "13kg", block: "B", duration: 45, rest: 15,
+    note: "KB einseitig in einer Hand, aufrecht gehen ~20m. Rumpf verhindert aktiv das Seitneigen. Kein Shrugging — Schulter bleibt unten und entspannt. Seite wechseln. Laterale Rumpfstabilität = direkte Enduro-Relevanz." },
+  { name: "KB Lateral Lunge", weight: "8kg", block: "C", duration: 45, rest: 15,
+    note: "Seitlicher Ausfallschritt. KB vor der Brust oder hängend. Kontrolliert absenken, Knie zeigt in Richtung Zeh. Adduktoren belasten — Progression: langsam und tief, nicht schnell. Achtung Cramping-Muster: kontrolliert bleiben." },
+  { name: "KB Swing (einarmig)", weight: "8kg", block: "C", duration: 45, rest: 15,
+    note: "Wie beidarmiger Swing, aber eine Hand. Die Schulter stabilisiert die Verbindung — sie drückt nicht. KB schwingt bis Schulter-/Brusthöhe. Rumpf verhindert die Rotation zur Seite. Seite wechseln." },
+  { name: "Farmer's Carry (asymm.)", weight: "13+8kg", block: "C", duration: 45, rest: 15,
+    note: "13kg eine Hand, 8kg andere Hand — bewusst asymmetrisch für mehr Core-Demand als gleiche Gewichte. Aufrecht gehen, Schultern entspannt und unten. Finisher: metabolisch, Griffkraft, Rumpfstabilität alles auf einmal." }
+];
+
+let done = new Set();
+let plannedRounds = 2;
+let currentRound = 1;
+let timerInterval = null;
+let timerRunning = false;
+let timeLeft = 45;
+let isRest = false;
+let currentExIdx = null;  // index into activeExercises()
+let totalSeconds = 0;
+let phaseDuration = 45;
+let activeBlocks = new Set(['A', 'B', 'C']);
+
+function activeExercises() {
+  return exercises.filter(e => activeBlocks.has(e.block));
+}
+
+function toggleBlockActive(block) {
+  // Don't allow deselecting all
+  if (activeBlocks.has(block) && activeBlocks.size === 1) return;
+  if (activeBlocks.has(block)) activeBlocks.delete(block);
+  else activeBlocks.add(block);
+
+  const btn = document.getElementById('toggle' + block);
+  const colorClass = { A: 'active-a', B: 'active-b', C: 'active-c' }[block];
+  if (activeBlocks.has(block)) btn.classList.add(colorClass);
+  else btn.classList.remove(colorClass);
+
+  // Reset timer when block selection changes
+  resetTimer();
+  updateEstTime();
+  updateSummary();
+}
+
+function updateEstTime() {
+  const exs = activeExercises();
+  const totalSec = exs.length * (45 + 15) * plannedRounds;
+  const mins = Math.round(totalSec / 60);
+  document.getElementById('estMinutes').textContent = mins;
+  document.getElementById('estExCount').textContent = exs.length;
+  document.getElementById('estRounds').textContent = plannedRounds;
+}
+
+function updateSummary() {
+  const exs = activeExercises();
+  document.getElementById('sumDone').textContent = done.size;
+  document.getElementById('sumRound').textContent = plannedRounds;
+  const totalSec = exs.length * (45 + 15) * plannedRounds;
+  document.getElementById('sumTime').textContent = '~' + Math.round(totalSec / 60) + "'";
+  const pct = exs.length > 0 ? Math.round((done.size / exs.length) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = done.size + ' / ' + exs.length + ' Übungen';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('currentRound').textContent = currentRound;
+}
+
+function toggleDone(idx) {
+  if (done.has(idx)) done.delete(idx);
+  else done.add(idx);
+  const exs = activeExercises();
+  // find original exercise index for row highlight
+  const ex = exs[idx];
+  if (ex) {
+    const origIdx = exercises.indexOf(ex);
+    const row = document.getElementById('ex-' + origIdx);
+    if (row) row.classList.toggle('done', done.has(idx));
+  }
+  updateSummary();
+
+  if (done.size === exs.length) {
+    if (currentRound < plannedRounds) {
+      currentRound++;
+      done.clear();
+      document.querySelectorAll('.exercise-row').forEach(r => r.classList.remove('done'));
+      document.getElementById('currentRound').textContent = currentRound;
+    }
+  }
+  updateSummary();
+}
+
+function toggleBlock(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+function changeRound(delta) {
+  plannedRounds = Math.max(1, Math.min(5, plannedRounds + delta));
+  document.getElementById('roundDisplay').textContent = plannedRounds;
+  updateEstTime();
+  updateSummary();
+}
+
+// ── Audio ──────────────────────────────────────────────────────────────────
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function beep(freq, duration, volume = 0.4, type = 'sine') {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+
+// Short tick for countdown (3-2-1)
+function beepTick() { beep(880, 0.12, 0.3); }
+// Go beep — workout starts / resumes
+function beepGo() {
+  beep(660, 0.12, 0.5);
+  setTimeout(() => beep(880, 0.25, 0.5), 140);
+}
+// End beep — phase done
+function beepEnd() {
+  beep(440, 0.15, 0.5);
+  setTimeout(() => beep(330, 0.35, 0.4), 160);
+}
+// Workout complete
+function beepDone() {
+  [0, 150, 300, 500].forEach((t, i) => {
+    setTimeout(() => beep(440 + i * 110, 0.3, 0.5), t);
+  });
+}
+
+// ── Speech ─────────────────────────────────────────────────────────────────
+function speak(text, delay = 0) {
+  if (!window.speechSynthesis) return;
+  setTimeout(() => {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'de-DE';
+    utter.rate = 1.05;
+    utter.pitch = 1.0;
+    window.speechSynthesis.speak(utter);
+  }, delay);
+}
+
+// ── Timer ──────────────────────────────────────────────────────────────────
+
+function formatTime(s) {
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+function updateTimerDisplay() {
+  const color = isRest ? 'var(--accent2)' : 'var(--accent)';
+  let phase, exName;
+
+  if (currentExIdx === null && !isRest) {
+    phase = 'BEREIT'; exName = '—';
+  } else if (isRest) {
+    const nextIdx = currentExIdx !== null ? currentExIdx + 1 : null;
+    const nextName = (nextIdx !== null && nextIdx < exercises.length)
+      ? 'Nächste: ' + exercises[nextIdx].name
+      : 'Letzte Pause…';
+    phase = 'PAUSE'; exName = nextName;
+  } else {
+    phase = 'WORK'; exName = exercises[currentExIdx].name;
+  }
+
+  document.getElementById('timerDisplay').textContent = formatTime(timeLeft);
+  document.getElementById('timerDisplay').style.color = color;
+  document.getElementById('timerPhase').textContent = phase;
+  document.getElementById('timerExName').textContent = exName;
+  const pct = (timeLeft / phaseDuration) * 100;
+  document.getElementById('timerBarFill').style.width = pct + '%';
+  document.getElementById('timerBarFill').style.background = color;
+}
+
+function advanceToNextPhase() {
+  const exs = activeExercises();
+  if (!isRest) {
+    // Work done → go to rest
+    beepEnd();
+    if (currentExIdx !== null) toggleDone(currentExIdx);
+    isRest = true;
+    timeLeft = 15;
+    phaseDuration = 15;
+    updateTimerDisplay();
+    const nextIdx = currentExIdx !== null ? currentExIdx + 1 : null;
+    if (nextIdx !== null && nextIdx < exs.length) {
+      speak('Pause. Nächste Übung: ' + exs[nextIdx].name, 400);
+    } else {
+      speak('Letzte Pause. Gleich geschafft!', 400);
+    }
+    runTick();
+  } else {
+    // Rest done → go to next exercise
+    const nextIdx = currentExIdx !== null ? currentExIdx + 1 : 0;
+    isRest = false;
+    if (nextIdx < exs.length) {
+      currentExIdx = nextIdx;
+      timeLeft = exs[currentExIdx].duration;
+      phaseDuration = exs[currentExIdx].duration;
+      updateTimerDisplay();
+      beepGo();
+      runTick();
+    } else {
+      // Round done
+      if (currentRound < plannedRounds) {
+        currentRound++;
+        done.clear();
+        document.querySelectorAll('.exercise-row').forEach(r => r.classList.remove('done'));
+        currentExIdx = 0;
+        timeLeft = exs[0].duration;
+        phaseDuration = exs[0].duration;
+        updateSummary();
+        updateTimerDisplay();
+        speak('Runde ' + currentRound + '. Los geht\'s mit ' + exs[0].name, 200);
+        beepGo();
+        runTick();
+      } else {
+        // All done!
+        timerRunning = false;
+        currentExIdx = null;
+        isRest = false;
+        timeLeft = 0;
+        document.getElementById('timerPhase').textContent = 'FERTIG 🎉';
+        document.getElementById('timerExName').textContent = 'Workout abgeschlossen!';
+        document.getElementById('timerDisplay').textContent = '0:00';
+        document.getElementById('startBtn').textContent = '▶ Start';
+        beepDone();
+        speak('Workout abgeschlossen. Gut gemacht!', 600);
+      }
+    }
+  }
+}
+
+function runTick() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    // Countdown beeps at 3, 2, 1
+    if (timeLeft <= 3 && timeLeft > 0) beepTick();
+    timeLeft--;
+    totalSeconds++;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      advanceToNextPhase();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const exs = activeExercises();
+  const color = isRest ? 'var(--accent2)' : 'var(--accent)';
+  let phase, exName;
+
+  if (currentExIdx === null && !isRest) {
+    phase = 'BEREIT';
+    exName = exs.length > 0 ? 'Erste Übung: ' + exs[0].name : '—';
+  } else if (isRest) {
+    const nextIdx = currentExIdx !== null ? currentExIdx + 1 : null;
+    const nextName = (nextIdx !== null && nextIdx < exs.length)
+      ? 'Nächste: ' + exs[nextIdx].name
+      : 'Letzte Pause…';
+    phase = 'PAUSE'; exName = nextName;
+  } else {
+    phase = 'WORK'; exName = exs[currentExIdx] ? exs[currentExIdx].name : '—';
+  }
+
+  document.getElementById('timerDisplay').textContent = formatTime(timeLeft);
+  document.getElementById('timerDisplay').style.color = color;
+  document.getElementById('timerPhase').textContent = phase;
+  document.getElementById('timerExName').textContent = exName;
+  const pct = (timeLeft / phaseDuration) * 100;
+  document.getElementById('timerBarFill').style.width = pct + '%';
+  document.getElementById('timerBarFill').style.background = color;
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('startBtn').textContent = '▶ Weiter';
+  } else {
+    timerRunning = true;
+    document.getElementById('startBtn').textContent = '⏸ Pause';
+    const exs = activeExercises();
+    if (currentExIdx === null && !isRest) {
+      currentExIdx = 0;
+      timeLeft = exs[0].duration;
+      phaseDuration = exs[0].duration;
+      updateTimerDisplay();
+      speak('Los geht\'s! ' + exs[0].name, 200);
+      beepGo();
+    }
+    runTick();
+  }
+}
+
+function skipPhase() {
+  clearInterval(timerInterval);
+  timeLeft = 1;
+  updateTimerDisplay();
+  advanceToNextPhase();
+  if (timerRunning) runTick();
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  isRest = false;
+  currentExIdx = null;
+  const exs = activeExercises();
+  timeLeft = exs.length > 0 ? exs[0].duration : 45;
+  phaseDuration = timeLeft;
+  done.clear();
+  document.querySelectorAll('.exercise-row').forEach(r => r.classList.remove('done'));
+  currentRound = 1;
+  document.getElementById('startBtn').textContent = '▶ Start';
+  updateTimerDisplay();
+  updateSummary();
+}
+
+function startExercise(origIdx) {
+  // Map original exercise index to active index
+  const exs = activeExercises();
+  const ex = exercises[origIdx];
+  const activeIdx = exs.indexOf(ex);
+  if (activeIdx === -1) return; // not in active blocks
+  clearInterval(timerInterval);
+  timerRunning = false;
+  isRest = false;
+  currentExIdx = activeIdx;
+  timeLeft = ex.duration;
+  phaseDuration = ex.duration;
+  document.getElementById('startBtn').textContent = '▶ Start';
+  updateTimerDisplay();
+  showModal(origIdx);
+}
+
+function showModal(idx) {
+  const ex = exercises[idx];
+  document.getElementById('modalTitle').textContent = ex.name;
+  document.getElementById('modalMeta').textContent = ex.weight + ' · Block ' + ex.block + ' · ' + ex.duration + ' sek Arbeit / ' + ex.rest + ' sek Pause';
+  document.getElementById('modalNote').textContent = ex.note;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Init
+updateTimerDisplay();
+updateSummary();
+updateEstTime();
+</script>
+</body>
+</html>
